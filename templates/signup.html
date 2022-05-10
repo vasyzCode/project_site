@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Sign Up</h3>
+    <div class="box">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="notification is-danger">
+            {{ messages[0] }}. <a href="{{ url_for('auth.login') }}">Авторизоваться</a>.
+        </div>
+        {% endif %}
+        {% endwith %}
+        <form method="POST" action="/signup" class="needs-validation">
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="name" placeholder="Имя" autofocus="" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="surname" placeholder="Фамилия" autofocus=""
+                           required>
+                </div>
+            </div>
+
+            <div class="navbar-menu field">
+                <select class="form-select" aria-label="Default select example" name="bday">
+                    <option selected value="1">1</option>
+                    {% for i in range(2, 32) %}
+                    <option value={{ i }}>{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <select class="form-select" aria-label="Default select example" name="bmonth">
+                    <option selected value="1">Январь</option>
+                    {% for i in month_list %}
+                    <option value={{ loop.index + 1 }}>{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <select class="form-select" aria-label="Default select example" name="byear">
+                    <option selected value="2022">2022</option>
+                    {% for i in range(2021, 1900, -1) %}
+                    <option value={{ i }}>{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="position" placeholder="Ваша должность" autofocus=""
+                           required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="speciality" placeholder="Ваша профессия"
+                           autofocus="" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="address" placeholder="Адрес проживания" autofocus=""
+                           required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="email" name="email" placeholder="Почта" autofocus="" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="password" name="password" placeholder="Пароль" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="phrase" placeholder="Секретная фраза" required>
+                </div>
+            </div>
+
+            <button class="button is-block is-info is-large is-fullwidth">Sign Up</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
