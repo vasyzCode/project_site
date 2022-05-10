@@ -30,14 +30,14 @@ def send_email(toaddr, header, body):
 
 @auth.route('/login')  # форма входа
 def login():
-    return render_template('../templates/login.html', confirmed=bool(request.form.get('confirm_email')))
+    return render_template('login.html', confirmed=bool(request.form.get('confirm_email')))
 
 
 @auth.route('/signup')  # форма регистрации
 def signup():
     month_list = ['Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
                   'Декабрь']
-    return render_template('../templates/signup.html', month_list=month_list)
+    return render_template('signup.html', month_list=month_list)
 
 
 @auth.route('/logout')  # выход из аккаунта
@@ -268,7 +268,7 @@ def change_password():
     token = request.args.get('token')
     try:
         need_phrase = jwt.decode(token, jwt_sicret_code, algorithms=['HS256'])['need_phrase']
-        return render_template('../templates/change_password.html', token=token, need_phrase=need_phrase)
+        return render_template('change_password.html', token=token, need_phrase=need_phrase)
     except jwt.exceptions.ExpiredSignatureError:
         flash("Время действия токена истекло")
         return redirect(url_for('auth.reset_password'))
@@ -305,7 +305,7 @@ def change_password_post():
 
 @auth.route('/reset_password')  # восстановление пароля по фразе
 def reset_password():
-    return render_template('../templates/reset_password.html')
+    return render_template('reset_password.html')
 
 
 @auth.route('/reset_password', methods=['POST'])  # восстановление пароля по фразе
@@ -319,7 +319,7 @@ def reset_password_post():
         return redirect(url_for('auth.reset_password'))
     elif not user.check_pharse(phrase):
         flash("Неверная секретная фраза.")
-        return render_template('../templates/reset_password.html', phrase=True)
+        return render_template('reset_password.html', phrase=True)
     dt = datetime.now() + timedelta(minutes=10)
     encoded_token = jwt.encode({'user_id': user.id, 'email': user.email, 'exp': dt, 'need_phrase': False},
                                jwt_sicret_code,
@@ -329,7 +329,7 @@ def reset_password_post():
 
 @auth.route('/recovery_email')  # восстановление пароля по почте
 def recovery_email():
-    return render_template('../templates/recovery_email.html')
+    return render_template('recovery_email.html')
 
 
 @auth.route('/recovery_email', methods=['POST'])  # восстановление пароля по почте
@@ -509,7 +509,7 @@ def recovery_email_post():
 </html>"""
     send_email(email, header, body)
     flash("Ссылка для восстановления пароля была отправлена на почту.")
-    return render_template('../templates/recovery_email.html')
+    return render_template('recovery_email.html')
 
 
 @auth.route('/confirm_email')  # подтверждение почты

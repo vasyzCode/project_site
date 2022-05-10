@@ -12,7 +12,7 @@ global_init("db/users.db")
 def index():
     session = create_session()
     users = session.query(User).all()
-    return render_template('../templates/index.html', users_count=len(users))
+    return render_template('index.html', users_count=len(users))
 
 
 @main.route('/profile')  # профиль
@@ -23,7 +23,7 @@ def profile():
               'position_user': current_user.position, 'speciality_user': current_user.speciality,
               'address_user': current_user.address, 'email_user': current_user.email,
               'confirmed': current_user.is_confirm}
-    return render_template('../templates/profile.html', **values)
+    return render_template('profile.html', **values)
 
 
 @main.route('/profile', methods=["POST"])  # редактирование профиля
@@ -53,7 +53,7 @@ def profile_by_id(user_id):
     values = {'id_user': user.id, 'name_user': user.name, 'surname_user': user.surname,
               'bdate_user': f"{user.bdate.day}.{user.bdate.month}.{user.bdate.year}", 'position_user': user.position,
               'speciality_user': user.speciality, 'address_user': user.address, 'email_user': user.email}
-    return render_template('../templates/profile.html', **values)
+    return render_template('profile.html', **values)
 
 
 @main.route('/search', methods=["POST"])  # поиск пользоваателей
@@ -63,7 +63,7 @@ def search_post():
     users = session.query(User).filter(User.name.ilike("%" + request.form.get('request') + "%") | User.surname
                                        .ilike("%" + request.form.get('request') + "%")).all()
     users_lst = [[user.id, user.name, user.surname, user.speciality] for user in users]
-    return render_template('../templates/search.html', users=users_lst, count=len(users_lst))
+    return render_template('search.html', users=users_lst, count=len(users_lst))
 
 
 @main.route('/all_users')  # поиск пользоваателей
@@ -72,4 +72,4 @@ def all_users():
     session = create_session()
     users = session.query(User).all()
     users_lst = [[user.id, user.name, user.surname, user.speciality] for user in users]
-    return render_template('../templates/all_users.html', users=users_lst, count=len(users_lst))
+    return render_template('all_users.html', users=users_lst, count=len(users_lst))
